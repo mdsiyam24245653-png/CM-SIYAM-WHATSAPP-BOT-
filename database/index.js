@@ -5,7 +5,7 @@ import path from "path";
 
 import { CONFIG } from "../config.js";
 
-const DB_DIR = CONFIG?.DATABASE_DIR || "./database";
+const DB_DIR = process.env.DATABASE_DIR || CONFIG?.DATABASE_DIR || "./database";
 
 await fs.ensureDir(DB_DIR);
 
