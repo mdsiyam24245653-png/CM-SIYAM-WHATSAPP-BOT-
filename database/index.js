@@ -1,4 +1,3 @@
-
 // AUTHOR: 𝐑𝐉 𝐬𝐢𝐲𝐚𝐦
 
 import fs from "fs-extra";
@@ -6,10 +5,12 @@ import path from "path";
 
 import { CONFIG } from "../config.js";
 
-await fs.ensureDir(CONFIG.DATABASE_DIR);
+const DB_DIR = CONFIG?.DATABASE_DIR || "./database";
+
+await fs.ensureDir(DB_DIR);
 
 export async function readData(name, fallback = {}) {
-  const file = path.join(CONFIG.DATABASE_DIR, `${name}.json`);
+  const file = path.join(DB_DIR, `${name}.json`);
 
   try {
     if (!(await fs.pathExists(file))) {
@@ -25,10 +26,10 @@ export async function readData(name, fallback = {}) {
 }
 
 export async function writeData(name, data) {
-  const file = path.join(CONFIG.DATABASE_DIR, `${name}.json`);
+  const file = path.join(DB_DIR, `${name}.json`);
   const tempFile = `${file}.tmp`;
 
-  await fs.ensureDir(CONFIG.DATABASE_DIR);
+  await fs.ensureDir(DB_DIR);
 
   await fs.writeFile(
     tempFile,
@@ -42,7 +43,7 @@ export async function writeData(name, data) {
 }
 
 export async function deleteData(name) {
-  const file = path.join(CONFIG.DATABASE_DIR, `${name}.json`);
+  const file = path.join(DB_DIR, `${name}.json`);
 
   if (await fs.pathExists(file)) {
     await fs.remove(file);
@@ -52,10 +53,10 @@ export async function deleteData(name) {
 }
 
 export async function getDatabaseInfo() {
-  const files = await fs.readdir(CONFIG.DATABASE_DIR);
+  const files = await fs.readdir(DB_DIR);
 
   return {
-    directory: CONFIG.DATABASE_DIR,
+    directory: DB_DIR,
     files,
     count: files.length
   };
