@@ -61,3 +61,4 @@ export async function getDatabaseInfo() {
     count: files.length
   };
 }
+
