@@ -1,4 +1,3 @@
-
 // AUTHOR: 𝐑𝐉 𝐬𝐢𝐲𝐚𝐦
 
 import fs from "fs-extra";
@@ -26,12 +25,14 @@ let isStopping = false;
 let isStarting = false;
 
 async function prepareDirectories() {
-  await Promise.all([
-    fs.ensureDir(CONFIG.SESSION_DIR),
-    fs.ensureDir(CONFIG.COMMAND_DIR),
-    fs.ensureDir(CONFIG.EVENT_DIR),
-    fs.ensureDir(CONFIG.DATABASE_DIR)
-  ]);
+  const dirs = [
+    CONFIG.SESSION_DIR,
+    CONFIG.COMMAND_DIR,
+    CONFIG.EVENT_DIR,
+    CONFIG.DATABASE_DIR
+  ].filter(Boolean);
+
+  await Promise.all(dirs.map(dir => fs.ensureDir(dir)));
 }
 
 async function startBot() {
